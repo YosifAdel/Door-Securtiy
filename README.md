@@ -1,4 +1,4 @@
-# Door-Securtiy
+# Door Locker Security System
 Door Locker Security System
 ⚙️🖥️ Hardware Setup:
 For this project, I utilized the mighty ATmega32 MCU, operating at a clock frequency of 8 MHz .
