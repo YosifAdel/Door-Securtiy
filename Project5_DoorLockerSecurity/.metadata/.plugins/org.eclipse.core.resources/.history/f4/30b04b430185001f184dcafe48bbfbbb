@@ -1,0 +1,72 @@
+ /******************************************************************************
+ * Module: TIMER 1
+ * File Name: timer1.c
+ * Description: Source file for the AVR TIMER 1 driver
+ * Author: Yousif Adel
+ *******************************************************************************/
+#include	"timer1.h"
+#include	<avr/interrupt.h>
+
+/*******************************************************************************
+ *                      Functions Definitions                                   *
+ *******************************************************************************/
+/*
+● Description:
+  	  ⮚ Function to initialize the Timer driver
+● Inputs: pointer to the configuration structure with type Timer1_ConfigType.
+● Return: None
+ */
+void Timer1_init(const Timer1_ConfigType * Config_Ptr)
+{
+	/* 1. Set timer1 initial count */
+	TCNT1_REG.TwoBytes = Config_Ptr->initial_value;
+
+	/* 2. Non PWM mode FOC1A=1 and FOC1B=1 */
+	TCCR1A_REG.Bits.FOC1A_Bit = 1;
+	TCCR1A_REG.Bits.FOC1B_Bit = 1;
+
+	/* 3. Set the mode using WGM10 [TCCR1A] , WGM11 [TCCR1A], WGM12[TCCR1B] */
+	TCCR1A_REG.Bits.WGM10_Bit =  ((Config_Ptr->mode) & 0x01);
+	TCCR1A_REG.Bits.WGM11_Bit =  (((Config_Ptr->mode) & 0x02) >> 1);
+	TCCR1B_REG.Bits.WGM12_Bit =  (((Config_Ptr->mode) & 0x04) >> 2);
+
+	/* 4. set the Pre-Scalar*/
+	TCCR1B_REG.Bits.CS10_Bit = ((Config_Ptr->prescaler) & 0x01);
+	TCCR1B_REG.Bits.CS11_Bit =  (((Config_Ptr->prescaler) & 0x02) >> 1);
+	TCCR1B_REG.Bits.CS12_Bit =  (((Config_Ptr->prescaler) & 0x04) >> 2);
+
+	/* disconnect OC1A/OC1B on compare match, set OC1A/OC1B at BOTTOM */
+#if (MODE == NORMAL)
+	/* enable Normal Interrupt Enable*/
+	TIMSK_REG.Bits.TOIE1_Bit = 1;
+
+#elif(MODE == COMPARE)
+#elif
+#endif
+
+//	TCCR1A_REG.Bits.COM1A0_Bit  = Config_Ptr->mode;
+//	TCCR1A_REG.Bits.COM1A1_Bit = ((Config_Ptr->mode) >> 1);
+}
+
+/*
+● Description:
+	⮚ Function to disable the Timer1.
+● Inputs: None
+● Return: None
+ */
+void Timer1_deInit(void)
+{
+
+}
+
+/*
+● Description:
+	⮚ Function to set the Call Back function address.
+● Inputs: pointer to Call Back function.
+● Return: None
+ */
+
+void Timer1_setCallBack(void(*a_ptr)(void))
+{
+
+}

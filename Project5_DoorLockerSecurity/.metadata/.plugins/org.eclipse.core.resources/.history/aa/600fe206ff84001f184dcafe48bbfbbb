@@ -1,0 +1,45 @@
+ /******************************************************************************
+ * Module: TIMER 1
+ * File Name: timer1.c
+ * Description: Source file for the AVR TIMER 1 driver
+ * Author: Yousif Adel
+ *******************************************************************************/
+#include	"timer1.h"
+#include	<avr/interrupt.h>
+
+/*******************************************************************************
+ *                      Functions Definitions                                   *
+ *******************************************************************************/
+/*
+● Description:
+  	  ⮚ Function to initialize the Timer driver
+● Inputs: pointer to the configuration structure with type Timer1_ConfigType.
+● Return: None
+ */
+void Timer1_init(const Timer1_ConfigType * Config_Ptr)
+{
+
+}
+
+/*
+● Description:
+	⮚ Function to disable the Timer1.
+● Inputs: None
+● Return: None
+ */
+void Timer1_deInit(void)
+{
+
+}
+
+/*
+● Description:
+	⮚ Function to set the Call Back function address.
+● Inputs: pointer to Call Back function.
+● Return: None
+ */
+
+void Timer1_setCallBack(void(*a_ptr)(void))
+{
+
+}

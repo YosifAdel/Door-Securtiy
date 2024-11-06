@@ -1,54 +1,121 @@
 # Door Locker Security System
 
+## Overview
 
-⚙️🖥️ Hardware Setup:
-For this project, I utilized the mighty ATmega32 MCU, operating at a clock frequency of 8 MHz .
+### This project implements a door locker security system using two ATmega32 microcontrollers.
 
-- Microcontroller 1 (MC1):
-1. It acts as the Human Machine Interface (HMI_ECU) , It is responsible for user interaction, handling input from the keypad, and displaying messages on the LCD.
+### The system enables unlocking a door using a password, managed through a Human Machine Interface (HMI) and Control ECU.
 
-2. Drivers:
-a) HAL drivers for MC1: includes LCD and Keypad b) MCAL drivers for MC1:
-includes GPIO, UART,Timer 1
+### The HMI provides the interface with a 4x4 keypad and 2x16 LCD, while the Control ECU handles password verification, door unlocking, and alarm activation.
 
-- Microcontroller 2 (MC2):
-1. It acts as the (Control_ECU) and manages all processing and decisions, including password verification, door operation, and system alarm activation.
+## Key Features:
 
-2. Drivers:
-a) HAL drivers for MC2: includes Buzzer, EEPROM, and DC-motor
-b) MCAL drivers for MC2: include GPIO, I2C, UART, PWM mode of Timer0 and Timer1.
+### Password Protection:
 
-⚙️ System Sequence :
-1. Create New Password 🔐:
-To create a new password, use the keypad to input a 5-digit password, then re-enter it for confirmation. If both passwords are identical, save them in EEPROM. If not, repeat step 1.
+User can set and change passwords using the keypad.
 
-2. Display the main options:
-a) LCD displays "choose option + or -"
-🚪 '+' for open the Door
-🔐 '-' for change the password
+### Door Locking and Unlocking:
 
-b) Using Keypad, enter your option
-🚪IF YOU CHOOSE '+' Open Door Sequence
-- if you choose + this means that you want to open the door.
-- LCD displays "please enter passwod"
-- Using Keypad, enters 5-digits password each character display as '*'
-,after finishing your password enter '=' to enter the password
-- compare the two passwords [password entered , password save in
-EEPROM]
-if identical, Open the door Sequence:
-1. LCD displays "Unlocking the door" for 15 seconds and Motor rotates
-with speed 100 in Clockwise for 15 seconds
-2. LCD displays "Door is open" for 3 seconds and Motor stops for 3 seconds
-3. LCD displays "Door is Locking" for 15 seconds and Motor rotates with speed 100 in Anti-Clockwise for 15 seconds
+Rotates the motor to unlock or lock the door.
 
-If password is incorrect, enter it twice before the buzzer turns on. The buzzer will open for 60 seconds, and the LCD will display "ERROR 3 times Wait 60 sec."
+### Security Alarm:
 
-🚪IF YOU CHOOSE '-' Change the password
-if you choose - this means that you want to change the password.
-LCD displays "please enter passwod"
-Using Keypad, enters 5-digits password each character display as '*' ,after
-finishing your password enter '=' to enter the password
+Activates buzzer if the wrong password is entered multiple times.
 
-compare the two passwords [password entered , password saved in EEPROM], if correct, change the password, repeat step 1
+### EEPROM Storage:
 
-If password is incorrect, enter it twice before the buzzer turns on. The buzzer will open for 60 seconds, and the LCD will display "ERROR 3 times Wait 60 sec."
+Stores the password securely in EEPROM.
+
+### Communication:
+
+Utilizes UART for communication between the two microcontrollers.
+
+## Components
+
+### 1. Microcontrollers: ATmega32 (2 units)
+
+### 2. LCD: 2x16 LCD
+
+### 3. Keypad: 4x4 Keypad
+
+### 4. DC Motor: Used for door locking/unlocking
+
+### 5. Buzzer: Used for security alarm
+
+### 6. EEPROM: Stores the system password
+
+## System Design
+
+### Layered Architecture:
+
+#### HMI_ECU:
+
+Handles user input through keypad and displays information on LCD.
+
+### Control_ECU:
+
+Manages password validation, door control, and alarm functions.
+
+### Steps:
+
+#### 1. Create a Password: User sets a password by entering and confirming a 5-digit password.
+
+#### 2. Open Door: User enters the password to unlock the door.
+
+#### 3.Change Password: User can change the password by re-entering the current password and setting a new one.
+
+#### 4. Security Mechanism: After 3 consecutive wrong password attempts, a buzzer sounds for 1 minute, and the system locks out.
+
+### Driver Requirements
+
+#### GPIO Driver
+
+#### Used across both ECUs for input/output handling.
+
+#### LCD Driver
+
+#### 2x16 LCD used for displaying information.
+
+#### Keypad Driver
+
+#### 4x4 Keypad for user input.
+
+#### Motor Driver
+
+#### DC Motor for opening and closing the door.
+
+#### EEPROM Driver
+
+#### External EEPROM used to store the password.
+
+#### UART Driver
+
+#### UART used for communication between the two microcontrollers.
+
+#### Timer Driver
+
+#### Timer1 used for motor control and message display timing.
+
+#### Buzzer Driver
+
+#### Buzzer used for system alerts, like incorrect password entries.
+
+### Installation
+
+#### Hardware Setup:
+
+Connect the microcontrollers, LCD, keypad, DC motor, EEPROM, buzzer, and other components according to the project specifications.
+
+#### Software Setup:
+
+##### Ensure that you have the necessary drivers for the UART, I2C, GPIO, and other components implemented.
+
+##### Upload the code to the two ATmega32 microcontrollers.
+
+#### Testing:
+
+##### Set a password, and test the door unlocking, password changing, and security features.
+
+#### Conclusion
+
+The Door Locker Security System provides a secure and user-friendly solution for password-based door access. The system ensures safety with an alarm triggered after multiple incorrect attempts.

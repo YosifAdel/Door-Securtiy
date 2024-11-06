@@ -1,0 +1,3 @@
+void Buzzer_init();
+void Buzzer_on(void);
+void Buzzer_off(void);

@@ -1,0 +1,11 @@
+/******************************************************************************
+ * Module: Buzzer
+ * File Name: buzzer.h
+ * Description: Header file for the Buzzer driver
+ * Author:	Yousif Adel
+ *******************************************************************************/
+
+
+void Buzzer_init();
+void Buzzer_on(void);
+void Buzzer_off(void);

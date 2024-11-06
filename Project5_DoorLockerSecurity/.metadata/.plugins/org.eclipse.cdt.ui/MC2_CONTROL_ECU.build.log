@@ -1,0 +1,36 @@
+11:37:59 **** Incremental Build of configuration Debug for project MC2_CONTROL_ECU ****
+make all 
+Building file: ../MC2_application.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"MC2_application.d" -MT"MC2_application.o" -c -o "MC2_application.o" "../MC2_application.c"
+In file included from ../MC2_application.c:12:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+Finished building: ../MC2_application.c
+ 
+Building target: MC2_CONTROL_ECU.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,MC2_CONTROL_ECU.map -mmcu=atmega32 -o "MC2_CONTROL_ECU.elf"  ./MC2_application.o ./buzzer.o ./dc_motor.o ./external_eeprom.o ./gpio.o ./pwm.o ./timer1.o ./twi.o ./uart.o   
+Finished building target: MC2_CONTROL_ECU.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S MC2_CONTROL_ECU.elf  >"MC2_CONTROL_ECU.lss"
+Finished building: MC2_CONTROL_ECU.lss
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 MC2_CONTROL_ECU.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    9294 bytes (28.4% Full)
+(.text + .data + .bootloader)
+
+Data:        288 bytes (14.1% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+11:37:59 Build Finished. 0 errors, 1 warnings. (took 743ms)
+

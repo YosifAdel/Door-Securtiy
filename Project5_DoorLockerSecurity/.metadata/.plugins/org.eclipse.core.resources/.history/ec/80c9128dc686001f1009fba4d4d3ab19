@@ -1,0 +1,217 @@
+ /******************************************************************************
+ * Module: UART
+ * File Name: uart.h
+ * Description: Header file for the UART AVR driver
+ * Author: Yousif Adel
+ *******************************************************************************/
+
+#ifndef UART_H_
+#define UART_H_
+#include "std_types.h"
+/*******************************************************************************
+ *                                Definitions                                  *
+ *******************************************************************************/
+
+#define MC_READY 			0x10
+#define MATCHED_PASSWORD	0x01
+#define DETECT_ERROR		0x02
+#define ACCESS_DENIED		0x03
+
+/***************** UART Registers type structure declarations *******************/
+typedef union
+{
+	uint16 Byte;
+	struct
+	{
+		uint16 RXB_Bits:8;
+		uint16 TXB_Bits:8;
+	}Bits;
+}UART_UDR_Type;
+
+typedef union
+{
+	uint8 Byte;
+	struct
+	{
+		uint8 MPCM_Bit:1;
+		uint8 U2X_Bit:1;
+		uint8 PE_Bit:1;
+		uint8 DOR_Bit:1;
+		uint8 FE_Bit:1;
+		uint8 UDRE_Bit:1;
+		uint8 TXC_Bit:1;
+		uint8 RXC_Bit:1;
+	}Bits;
+}UART_UCSRA_Type;
+
+typedef union
+{
+	uint8 Byte;
+	struct
+	{
+		uint8 TXB8_Bit:1;
+		uint8 RXB8_Bit:1;
+		uint8 UCSZ2_Bit:1;
+		uint8 TXEN_Bit:1;
+		uint8 RXEN_Bit:1;
+		uint8 UDRIE_Bit:1;
+		uint8 TXCIE_Bit:1;
+		uint8 RXCIE_Bit:1;
+	}Bits;
+}UART_UCSRB_Type;
+
+
+typedef union
+{
+	uint8 Byte;
+	struct
+	{
+		uint8 UCPOL_Bit:1;
+		uint8 USCZ0_Bit:1;
+		uint8 USCZ1_Bit:1;
+		uint8 USBS_Bit:1;
+		uint8 UPM0_Bit:1;
+		uint8 UPM1_Bit:1;
+		uint8 UMSEL_Bit:1;
+		uint8 URSEL_Bit:1;
+	}Bits;
+}UART_UCSRC_Type;
+
+
+typedef union
+{
+	uint8 Byte;
+	struct
+	{
+		uint8 UBRR_Bits:4;
+		uint8 :1;
+		uint8 :1;
+		uint8 :1;
+		uint8 URSEL_Bit:1;
+	}Bits;
+}UART_UBRRH_Type;
+
+typedef union
+{
+	uint8 Byte;
+}UART_UBRRL_Type;
+
+/******************************************************************************/
+typedef union {
+	uint8 Byte;
+	struct{
+		uint8 C_Bit:1;
+		uint8 Z_Bit:1;
+		uint8 N_Bit:1;
+		uint8 V_Bit:1;
+		uint8 S_Bit:1;
+		uint8 H_Bit:1;
+		uint8 T_Bit:1;
+		uint8 I_Bit:1;
+	}Bits;
+}SREG_Type;
+/******************************************************************************/
+
+/**************************** UART Registers Definitions ***********************/
+#define UART_UCSRA_REG			(*(volatile UART_UCSRA_Type*)0x2B)
+#define UART_UCSRB_REG			(*(volatile UART_UCSRB_Type*)0x2A)
+#define UART_UCSRC_REG			(*(volatile UART_UCSRC_Type*)(0x40))
+
+#define UART_UDR_REG			(*(volatile UART_UDR_Type*)0x2C)
+
+#define UART_UBRRL_REG			(*(volatile UART_UBRRL_Type*)(0x29))
+#define UART_UBRRH_REG			(*(volatile UART_UBRRH_Type *)(0x40))
+/*******************************************************************************/
+#define S_REG      			(*(volatile SREG_Type*)0x5F)
+/*******************************************************************************/
+
+
+
+
+/*******************************************************************************
+ *                         Types Declaration                                   *
+ *******************************************************************************/
+typedef enum
+{
+	DISABLED,RESERVED, EVEN_PARITY, ODD_PARITY
+}UART_Parity;
+
+typedef enum
+{
+	BIT_5, BIT_6 , BIT_7, BIT_8 , RESERVED_0, RESERVED_1 , RESERVED_2, BIT_9
+}UART_BitData;
+
+typedef enum
+{
+	BR_10 = 10,
+	BR_300 = 300,
+	BR_600 = 600,
+	BR_1200 = 1200,
+	BR_2400=2400,
+	BR_4800=4800,
+	BR_9600=9600,
+	BR_14_4K=14400,
+	BR_19_2K=19200,
+	BR_28_8K=28800,
+	BR_38_4K=38400,
+	BR_57_6K=57600,
+	BR_76_8K=76800,
+	BR_115_2K=115200,
+	BR_230_4K=230400,
+	BR_250K=250000,
+	BR_0_5M=500000,
+	BR_1M= 1000000,
+}UART_BaudRate;
+
+typedef enum
+{
+	BIT_1, BIT_2
+}UART_StopBit;
+
+typedef struct{
+	UART_BitData bit_data;
+	UART_Parity parity;
+	UART_StopBit stop_bit;
+	UART_BaudRate baud_rate;
+}UART_ConfigType;
+
+
+/*******************************************************************************
+ *                      Functions Prototypes                                  *
+ *******************************************************************************/
+
+/*
+ * Description :
+ * Functional responsible for Initialize the UART device by:
+ * 1. Setup the Frame format like number of data bits, parity bit type and number of stop bits.
+ * 2. Enable the UART.
+ * 3. Setup the UART baud rate.
+ */
+
+void UART_init(const UART_ConfigType * Config_Ptr);
+
+/*
+ * Description :
+ * Functional responsible for send byte to another UART device.
+ */
+void UART_sendByte(const uint8 data);
+
+/*
+ * Description :
+ * Functional responsible for receive byte from another UART device.
+ */
+uint8 UART_receiveByte();
+
+/*
+ * Description :
+ * Send the required string through UART to the other UART device.
+ */
+void UART_sendString(const uint8 *Str);
+
+/*
+ * Description :
+ * Receive the required string until the '#' symbol through UART from the other UART device.
+ */
+void UART_receiveString(uint8 *Str);
+
+#endif /*UART_H_*/
